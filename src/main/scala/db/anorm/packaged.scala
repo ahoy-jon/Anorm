@@ -11,7 +11,7 @@ case class WithDefaults(defaultConvention: PartialFunction[AnalyserInfo,String] 
  
     def getParametersNames(m:Method):Seq[String] = {
             import scala.collection.JavaConversions._
-            play.classloading.enhancers.LocalvariablesNamesEnhancer.lookupParameterNames(m)
+            Seq[String]()
     } 
  
  

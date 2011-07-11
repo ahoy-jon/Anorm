@@ -611,7 +611,9 @@ package anorm {
 
             def getParametersNames(c:Constructor[_]):Seq[String] = {
                 import scala.collection.JavaConversions._
-                play.classloading.enhancers.LocalvariablesNamesEnhancer.lookupParameterNames(c)
+                
+                Seq[String]()
+                
             }
 
             val (cons,paramTypes,paramNames) = m.erasure
@@ -637,7 +639,7 @@ package anorm {
                   .by(e =>throw new RuntimeException( "The elected constructor doesn't have corresponding methods for all its parameters. "+e.toString))
                   .apply(paramNames.map(name=>(clean(name),m.erasure.getDeclaredMethod(name))))
 
-            play.Logger.trace("Constructor " + cons + " elected for " + typeName)
+            //play.Logger.trace("Constructor " + cons + " elected for " + typeName)
 
             (cons,names_types,names_methods)
         }
@@ -803,7 +805,7 @@ package anorm {
 
         def addBatch(args:(String,ParameterValue[_])*):BatchSql = this.copy(params=(this.params) :+ args)
 
-        def connection = play.db.DB.getConnection
+        def connection:java.sql.Connection = Config.getConnection
 
         def addBatchParams(args:ParameterValue[_]*):BatchSql = this.copy(params=(this.params) :+ sql.argsInitialOrder.zip(args))
 
@@ -832,7 +834,7 @@ package anorm {
         import SqlParser._
         import scala.util.control.Exception._
 
-        def connection = play.db.DB.getConnection
+        def connection:java.sql.Connection = Config.getConnection
 
         def getFilledStatement(connection:java.sql.Connection, getGeneratedKeys:Boolean=false):java.sql.PreparedStatement
 
@@ -922,6 +924,16 @@ package anorm {
         }
 
     }
+    
+    
+    
 
 
+}
+
+object Config {
+    import java.sql._
+    var fconnection : ((Unit) => Connection) = null
+    def setConnection (f: ((Unit) => Connection)) : Unit = {fconnection = f}
+    def getConnection : Connection = fconnection()
 }
