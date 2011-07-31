@@ -19,7 +19,7 @@ Then add this to your dependencies ```"anorm" %% "anorm" % "0.1" ```
 Basic usage
 ------------- 
 ```scala
-// Inject connexion
+// Inject connection
 
 import play.db.Config._
 setConnection((Unit) => {... /* Function returning java.sql.Connection */ })
