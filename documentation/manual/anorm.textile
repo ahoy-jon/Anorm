@@ -99,7 +99,7 @@ The first way to access data coming from a **Select** query, is to use the Strea
 
 When you call @apply()@ on any SQL statement, you will receive a lazy @Stream@ of @Row@, where each row can be seen as a dictionary:
 
-bc. // Create an SQL query
+bc.. // Create an SQL query
 val selectCountries = SQL("Select * from Country")
 
 // Transform the resulting Stream[Row] as a List[(String,String)]
@@ -107,7 +107,7 @@ val countries = selectCountries().map(row =>
     row[String]("code") -> row[String]("name")
 ).toList
 
-In the following example we will count the number of Country in the database. So the resultSet will be a single row with a single column:
+p.. In the following example we will count the number of Country in the database. So the resultSet will be a single row with a single column:
 
 bc. // First retrieve the first row
 val firstRow = SQL("Select count(*) as c from Country").apply().head
@@ -121,7 +121,7 @@ You can also use Pattern Matching to match and extract the @Row@ content. In thi
 
 The following example transform each row to the correct Scala type:
 
-bc. case class SmallCountry(name:String)
+bc.. case class SmallCountry(name:String)
 case class BigCountry(name:String)
 case class France
 
@@ -131,7 +131,7 @@ val countries = SQL("Select name,population from Country")().collect {
     case Row(name:String, _) => SmallCountry(name)
 }
 
-Note that since @collect(…)@ ignore the cases where the partial function isn't defined, it allow your code to safely ignore rows that you don't expect.
+p.. Note that since @collect(…)@ ignore the cases where the partial function isn't defined, it allow your code to safely ignore rows that you don't expect.
 
 h2. Dealing with Nullable columns
 
@@ -213,7 +213,7 @@ bc. str("name") ~< spanM(by=str("code"), str("language"))
 
 Now let's use this parser to create a function that gives us all languages spoken in a country:
 
-bc. case class SpokenLanguages(country:String, languages:Seq[String])
+bc.. case class SpokenLanguages(country:String, languages:Seq[String])
 
 def spokenLanguages(countryCode:String):Option[SpokenLanguages] = {
     SQL(
@@ -232,9 +232,9 @@ def spokenLanguages(countryCode:String):Option[SpokenLanguages] = {
 
 }
 
-Finally, let's complicate our example to separate the official language and the other ones:
+p.. Finally, let's complicate our example to separate the official language and the other ones:
 
-bc. case class SpokenLanguages(
+bc.. case class SpokenLanguages(
     country:String,
     officialLanguage: Option[String],
     otherLanguages:Seq[String]
@@ -262,7 +262,7 @@ def spokenLanguages(countryCode:String):Option[SpokenLanguages] = {
 
 }
 
-If you try this on the **world** sample database, you will get:
+p.. If you try this on the **world** sample database, you will get:
 
 bc. $ spokenLanguages("FRA")
 > Some(
@@ -317,7 +317,7 @@ p(note). The @create@ method performs an INSERT into the database and try to ret
 
 Finally, let's write the missing @City@ and @CountryLanguage@ case classes, and make a more complex query:
 
-bc. case class Country(
+bc.. case class Country(
     code:Id[String], name:String, population:Int, headOfState:Option[String]
 )
 
