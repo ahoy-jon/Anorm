@@ -1,3 +1,7 @@
+DEPRECATED
+===============
+
+
 Anorm, SQL data access *from* Play Scala
 ==========================================
 
